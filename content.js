@@ -11,8 +11,17 @@
         Table of Contents
         <span id="toc-toggle-arrow" class="transition-transform duration-200">▼</span>
       </h4>
+      <div class="p-2">
+        <input 
+          id="toc-search" 
+          type="text" 
+          placeholder="Search prompts..." 
+          class="w-full px-2 py-1 rounded text-sm border border-gray-300 bg-token-main-surface-secondary"
+        />
+      </div>
       <ol class="toc-list transition-all duration-200 ease-in-out max-h-[1000px] overflow-y-auto"></ol>
     `;
+
 
     const layoutContainer = document.querySelector('main')?.parentElement;
 
@@ -31,8 +40,6 @@
 
       // 💡 Sidebar config
       toc.style.flexShrink = '0';
-      toc.style.width = '260px';
-      toc.style.minWidth = '240px';
       toc.style.display = 'flex';
       toc.style.flexDirection = 'column';
       toc.style.zIndex = '10';
@@ -45,19 +52,17 @@
   }
 
   document.addEventListener('click', (e) => {
-    if (e.target.id === 'chatgpt-toc-toggle' || e.target.closest('#chatgpt-toc-toggle')) {
-      const list = document.querySelector('#chatgpt-toc ol');
+    const isToggle = e.target.id === 'chatgpt-toc-toggle' || e.target.closest('#chatgpt-toc-toggle');
+    if (isToggle) {
+      const toc = document.getElementById('chatgpt-toc');
       const arrow = document.getElementById('toc-toggle-arrow');
-      
-      if (list.classList.contains('collapsed')) {
-        list.classList.remove('collapsed');
-        arrow.textContent = '▼';
-      } else {
-        list.classList.add('collapsed');
-        arrow.textContent = '▲';
-      }
+      const isCollapsed = toc.classList.toggle('collapsed');
+  
+      // Optional arrow text (or keep it rotated in CSS only)
+      arrow.textContent = isCollapsed ? '▶' : '▼';
     }
   });
+  
   
   
   
@@ -98,6 +103,24 @@
     // Apply intersection observer
     highlightActiveTocItem();
   }
+
+  // Enable live search filtering
+  document.addEventListener('input', (e) => {
+    if (e.target.id === 'toc-search') {
+      const search = e.target.value.toLowerCase();
+      const tocList = document.querySelector('#chatgpt-toc ol');
+      if (!tocList) return;
+  
+      const links = tocList.querySelectorAll('li');
+  
+      links.forEach(li => {
+        const text = li.textContent.toLowerCase();
+        li.style.display = text.includes(search) ? 'block' : 'none';
+      });
+    }
+  });
+  
+
   
   function highlightActiveTocItem() {
     const links = document.querySelectorAll('#chatgpt-toc a');
@@ -205,7 +228,7 @@
       subtree: true
     });
   }
-
+/*
   function autoCollapseToCOnMobile() {
     const list = document.querySelector('#chatgpt-toc ol');
     if (window.innerWidth < 1400 && list && !list.classList.contains('collapsed')) {
@@ -216,6 +239,7 @@
   window.addEventListener('resize', () => {
     autoCollapseToCOnMobile();
   });
+*/
   
   
   function init() {
@@ -226,7 +250,7 @@
         createToC();
         updateToC();
         observeNewUserMessages();
-        autoCollapseToCOnMobile();
+        //autoCollapseToCOnMobile();
       }
     }, 300);
   }
