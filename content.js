@@ -11,7 +11,7 @@
         Table of Contents
         <span id="toc-toggle-arrow" class="transition-transform duration-200">▼</span>
       </h4>
-      <div class="p-2">
+      <div class="p-2 toc-search-wrap">
         <input 
           id="toc-search" 
           type="text" 

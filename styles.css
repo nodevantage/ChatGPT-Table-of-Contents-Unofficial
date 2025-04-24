@@ -79,10 +79,13 @@ html {
   background-color: var(--sidebar-surface-tertiary);
 }
 
+.toc-search-wrap{
+  border-bottom: 1px solid var(--border-light, currentColor);
+}
+
 #toc-search {
   width: 100%;
   box-sizing: border-box;
-  margin-bottom: 8px;
 }
 
 @media (max-width: 1250px) {
