@@ -3,19 +3,15 @@ html {
 }
 
 #chatgpt-toc {
-  position: fixed;
-  top: 80px;
-  right: 20px;
-  width: 250px;
-  max-height: 85vh;
+  position: relative; /* Not fixed! */
   background-color: var(--main-surface-primary);
-  border-color: var(--border-light, currentColor);
-  border-width: 1px;
-  border-style: solid;
-  z-index: 10;
+  border-left: 1px solid var(--border-light, currentColor);
   font-size: 14px;
-  border-radius: 6px;
-  overflow: hidden; /* Keep box from stretching */
+  border-radius: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
 }
 
 #chatgpt-toc h4 {
@@ -25,7 +21,7 @@ html {
 
 #chatgpt-toc ul,
 #chatgpt-toc ol {
-  max-height: 75vh;
+  max-height: 100vh;
   overflow-y: auto;
   margin: 0;
   padding: 0;

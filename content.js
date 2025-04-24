@@ -1,21 +1,47 @@
 // MIT License - (c) 2025 Nodevantage
 // https://github.com/nodevantage/ChatGPT-Table-of-Contents
 
-function createToC() {
+  function createToC() {
     if (document.querySelector('#chatgpt-toc')) return;
-  
+
     const toc = document.createElement('div');
     toc.id = 'chatgpt-toc';
     toc.innerHTML = `
-  <h4 id="chatgpt-toc-toggle" class="px-3 py-3 cursor-pointer select-none flex justify-between items-center">
-    Table of Contents
-    <span id="toc-toggle-arrow" class="transition-transform duration-200">▼</span>
-  </h4>
-  <ol class="toc-list transition-all duration-200 ease-in-out max-h-[1000px] overflow-y-auto"></ol>
-`;
+      <h4 id="chatgpt-toc-toggle" class="px-3 py-3 cursor-pointer select-none flex justify-between items-center">
+        Table of Contents
+        <span id="toc-toggle-arrow" class="transition-transform duration-200">▼</span>
+      </h4>
+      <ol class="toc-list transition-all duration-200 ease-in-out max-h-[1000px] overflow-y-auto"></ol>
+    `;
 
+    const layoutContainer = document.querySelector('main')?.parentElement;
 
-    document.body.appendChild(toc);
+    if (layoutContainer) {
+      // 💡 Force flex layout if not already
+      layoutContainer.style.display = 'flex';
+      layoutContainer.style.flexDirection = 'row';
+      layoutContainer.style.alignItems = 'stretch';
+
+      // 💡 Make sure chat area resizes instead of pushing ToC down
+      const main = layoutContainer.querySelector('main');
+      if (main) {
+        main.style.flex = '1';
+        main.style.minWidth = '0'; // Allow shrinking
+      }
+
+      // 💡 Sidebar config
+      toc.style.flexShrink = '0';
+      toc.style.width = '260px';
+      toc.style.minWidth = '240px';
+      toc.style.display = 'flex';
+      toc.style.flexDirection = 'column';
+      toc.style.zIndex = '10';
+
+      layoutContainer.appendChild(toc);
+    } else {
+      // fallback
+      document.body.appendChild(toc);
+    }
   }
 
   document.addEventListener('click', (e) => {
@@ -36,12 +62,21 @@ function createToC() {
   
   
   function updateToC() {
+    const toc = document.getElementById('chatgpt-toc');
     const tocList = document.querySelector('#chatgpt-toc ol');
-    if (!tocList) return;
+    if (!toc || !tocList) return;
   
     tocList.innerHTML = '';
   
     const userMessages = document.querySelectorAll('[data-message-author-role="user"]');
+  
+    if (userMessages.length === 0) {
+      toc.style.display = 'none'; // ⛔️ Hide if no user prompts
+      return;
+    } else {
+      toc.style.display = 'block'; // ✅ Show when messages are found
+    }
+  
     userMessages.forEach((msg, i) => {
       const id = `toc-anchor-${i}`;
       msg.id = id;
