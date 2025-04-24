@@ -1,0 +1,53 @@
+html {
+  scroll-behavior: smooth;
+}
+
+#chatgpt-toc {
+  position: fixed;
+  top: 80px;
+  right: 20px;
+  width: 250px;
+  max-height: 85vh;
+  background-color: var(--main-surface-primary);
+  border-color: var(--border-light, currentColor);
+  border-width: 1px;
+  border-style: solid;
+  z-index: 10;
+  font-size: 14px;
+  border-radius: 6px;
+  overflow: hidden; /* Keep box from stretching */
+}
+
+#chatgpt-toc h4 {
+  border-bottom: 1px solid var(--border-light, currentColor);
+  background-color: var(--sidebar-surface-tertiary);
+}
+
+#chatgpt-toc ul,
+#chatgpt-toc ol {
+  max-height: 75vh;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  transition: max-height 0.3s ease;
+}
+
+#chatgpt-toc ol.collapsed,
+#chatgpt-toc ul.collapsed {
+  max-height: 0;
+  overflow: hidden;
+}
+
+#chatgpt-toc a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dashed var(--border-light, currentColor);
+}
+#chatgpt-toc a:hover {
+  text-decoration: none;
+}
+#chatgpt-toc a:hover,
+#chatgpt-toc a.toc-active {
+  background-color: var(--sidebar-surface-tertiary);
+}
